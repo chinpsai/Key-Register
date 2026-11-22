@@ -104,4 +104,3 @@ document.addEventListener('change',e=>{if(e.target.id=='hf'){hf=e.target.value;r
 document.addEventListener('visibilitychange',load);
 (async()=>{if(U){const r=await call('state');if(r&&r.state){D=r.state;tc=TCS()[0];render()}else if(!r||!r.error)showLogin('')}else showLogin('');setInterval(load,20000)})();
 </script></body></html>
-
