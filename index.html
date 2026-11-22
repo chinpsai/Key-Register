@@ -49,7 +49,7 @@ input,select{width:100%;padding:11px;border:1px solid var(--line);border-radius:
 <script src="config.js"></script>
 <script>
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
-let D={keys:[],log:[],me:'',admin:false},U=null,tc='',view='k',q='',hf='',busy=false;
+let lastErr='';let D={keys:[],log:[],me:'',admin:false},U=null,tc='',view='k',q='',hf='',busy=false;
 try{U=JSON.parse(localStorage.getItem('kr_u')||'null')}catch(e){}
 const $=id=>document.getElementById(id);
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -62,8 +62,8 @@ const outCount=c=>D.log.filter(l=>l.tc==c&&!l.inn).length;
 function toast(m){const t=$('t');t.textContent=m;t.style.display='block';clearTimeout(toast.x);toast.x=setTimeout(()=>t.style.display='none',3500)}
 function ban(m){const b=$('ban');b.textContent=m;b.style.display=m?'block':'none'}
 async function api(a,x){const r=await fetch(API_URL,{method:'POST',body:JSON.stringify(Object.assign({a:a,name:U&&U.name,pin:U&&U.pin},x||{}))});return r.json()}
-async function call(a,x){if(!API_URL||API_URL.indexOf('PASTE')==0){ban('App is not set up yet: config.js needs the web app address.');return null}
- try{const r=await api(a,x);if(r.auth===false){signOut(r.error);return null}return r}catch(e){toast('No connection. Try again.');return null}}
+async function call(a,x){lastErr='';if(!API_URL||API_URL.indexOf('PASTE')==0){lastErr='config.js has no web app address yet.';ban(lastErr);return null}
+ try{const r=await api(a,x);if(r.auth===false){signOut(r.error);return null}return r}catch(e){lastErr='Cannot reach the server ('+(e&&e.message||e)+'). Check the web app deployment (Execute as: Me, Access: Anyone).';toast('Cannot reach the server');return null}}
 function showLogin(msg){$('app').style.display='none';$('lg').style.display='block';$('lerr').textContent=msg||'';if(U)$('ln').value=U.name||''}
 function signOut(msg){U=null;try{localStorage.removeItem('kr_u')}catch(e){}$('lp').value='';showLogin(typeof msg=='string'?msg:'')}
 async function load(){if(!U||busy||$('sh').style.display=='flex'||document.hidden)return;const r=await call('state');if(r&&r.state){D=r.state;ban('');if(!tc)tc=TCS()[0];render()}else if(r&&r.error)ban(r.error)}
@@ -87,7 +87,7 @@ function openKey(c,k){const o=openOf(c,k);
 async function act(a,x,msg,btn){busy=true;if(btn)btn.disabled=true;const r=await call(a,x);busy=false;if(btn)btn.disabled=false;if(!r)return;if(r.state){D=r.state;render()}if(r.error)toast(r.error);else{close();toast(msg)}}
 $('lgo').onclick=async()=>{const n=$('ln').value.trim(),p=$('lp').value.trim();if(!n||!p){$('lerr').textContent='Enter your name and PIN.';return}
  U={name:n,pin:p};$('lgo').disabled=true;$('lerr').textContent='';const r=await call('state');$('lgo').disabled=false;
- if(r&&r.state){D=r.state;U.name=D.me;try{localStorage.setItem('kr_u',JSON.stringify(U))}catch(e){}tc=TCS()[0];view='k';render()}else if(r&&r.error)$('lerr').textContent=r.error;else if(!r)$('lerr').textContent=$('lerr').textContent||'Could not connect.'};
+ if(r&&r.state){D=r.state;U.name=D.me;try{localStorage.setItem('kr_u',JSON.stringify(U))}catch(e){}tc=TCS()[0];view='k';render()}else if(r&&r.error)$('lerr').textContent=r.error;else if(!r)$('lerr').textContent=lastErr||'Could not connect.'};
 $('lp').onkeydown=e=>{if(e.key=='Enter')$('lgo').click()};
 $('so').onclick=()=>signOut('');
 document.addEventListener('click',e=>{const t=e.target.closest('button');if(e.target.id=='sh')return close();if(!t)return;
