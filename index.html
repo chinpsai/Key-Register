@@ -6,104 +6,12 @@
 <meta name="apple-mobile-web-app-title" content="Keys"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" href="icon-192.png">
 <title>Key Register</title>
-<style>
-:root{--bg:#f3f1ec;--fg:#1d2733;--card:#fff;--line:#d9d4c8;--mut:#68707a;--acc:#1f3a5f;--accfg:#fff;--brass:#b07d1e;--ok:#1f7a4d;--out:#b5471f;--okbg:#e3f3ea;--outbg:#fbe9e1}
-@media (prefers-color-scheme:dark){:root{--bg:#11171e;--fg:#e8ecf0;--card:#1a232d;--line:#2d3a47;--mut:#92a0ad;--acc:#8fb4e6;--accfg:#0d1a2b;--brass:#e0b250;--ok:#5fd09a;--out:#ff9a73;--okbg:#14301f;--outbg:#3a2018}}
-*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
-body{margin:0 auto;max-width:560px;min-height:100vh;background:var(--bg);color:var(--fg);font:16px/1.35 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}
-header{padding:14px 14px 6px;display:flex;justify-content:space-between;align-items:center;gap:8px}
-h1{font-size:20px;margin:0}.me{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--mut)}
-.role{font:700 12px inherit;padding:4px 10px;border-radius:12px;background:var(--okbg);color:var(--ok)}.role.a{background:var(--acc);color:var(--accfg)}
-.lo{border:0;background:none;color:var(--mut);font:600 13px inherit;text-decoration:underline;padding:4px}
-#ban{margin:6px 12px;padding:10px;border-radius:8px;background:var(--outbg);color:var(--out);font-size:14px;display:none}
-.chips{display:flex;gap:6px;overflow-x:auto;padding:6px 12px 8px;scrollbar-width:none}
-.chip{flex:none;padding:8px 12px;border:1px solid var(--line);background:var(--card);color:var(--fg);border-radius:20px;font:600 14px inherit}
-.chip.on{background:var(--acc);color:var(--accfg);border-color:var(--acc)}.chip b{margin-left:5px;background:var(--out);color:#fff;border-radius:9px;padding:0 6px;font-size:12px}
-.tabs{display:flex;margin:0 12px;border-bottom:2px solid var(--line)}
-.tabs button{flex:1;padding:10px 0;border:0;background:none;color:var(--mut);font:600 15px inherit;border-bottom:3px solid transparent;margin-bottom:-2px}
-.tabs button.on{color:var(--fg);border-color:var(--brass)}
-main{padding:10px 12px 90px}
-.k{display:flex;width:100%;justify-content:space-between;align-items:center;gap:8px;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:13px;margin-bottom:8px;color:var(--fg);font:inherit}
-.k strong{display:block;font-size:16px}.k small{color:var(--mut);font-size:13px}
-.st{flex:none;font:700 12px inherit;padding:5px 9px;border-radius:12px;background:var(--okbg);color:var(--ok)}.st.o{background:var(--outbg);color:var(--out)}
-.h{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px;margin-bottom:8px;font-size:14px}.h .r{display:flex;justify-content:space-between;gap:8px;color:var(--mut);margin-top:3px}.h button{border:0;background:none;color:var(--out);font:600 13px inherit;padding:0}
-input,select{width:100%;padding:11px;border:1px solid var(--line);border-radius:9px;background:var(--card);color:var(--fg);font:16px inherit;margin:4px 0 10px}
-.bar{display:flex;gap:8px}.bar>*{flex:1}
-.btn{width:100%;padding:14px;border:0;border-radius:11px;background:var(--acc);color:var(--accfg);font:700 16px inherit}.btn:disabled{opacity:.6}.btn.g{background:none;color:var(--mut);border:1px solid var(--line);margin-top:8px}
-#sh{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:flex-end;z-index:9}
-#sh>div{width:100%;max-width:560px;margin:auto;background:var(--bg);border-radius:18px 18px 0 0;padding:18px 16px calc(24px + env(safe-area-inset-bottom,0px))}
-#sh h3{margin:0 0 2px}#sh p{margin:0 0 12px;color:var(--mut);font-size:14px}label{font-size:13px;color:var(--mut)}
-.empty{text-align:center;color:var(--mut);padding:30px 0}
-#lg{padding:50px 22px;text-align:center}#lg img{width:84px;height:84px;border-radius:20px}#lg h2{margin:12px 0 4px}#lg p{color:var(--mut);margin:0 0 18px;font-size:14px}#lg label{display:block;text-align:left}
-#t{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:10px 16px;border-radius:20px;display:none;z-index:12;font-size:14px;max-width:90%}
-</style></head><body>
-<div id="lg" style="display:none"><img src="icon-192.png" alt=""><h2>Key Register</h2><p>Sign in with your name and PIN.</p>
-<label>Name<input id="ln" autocomplete="username" autocapitalize="words"></label><label>PIN<input id="lp" type="password" inputmode="numeric" autocomplete="current-password"></label>
-<button class="btn" id="lgo">Sign in</button><div id="lerr" style="color:var(--out);margin-top:12px;font-size:14px"></div></div>
-<div id="app" style="display:none">
-<header><h1>🗝 Key Register</h1><div class="me"><span class="role" id="role"></span><span id="mn"></span><button class="lo" id="so">Sign out</button></div></header>
-<div id="ban"></div><div class="chips" id="chips"></div>
-<div class="tabs" id="tabs"><button data-v="k" class="on">Keys</button><button data-v="o">Out now</button><button data-v="h">History</button></div>
-<main id="m"></main></div>
-<div id="sh"><div id="shc"></div></div><div id="t"></div>
+<style>html,body{margin:0;height:100%;background:#1f3a5f}body{padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px);box-sizing:border-box}
+iframe{border:0;width:100%;height:100%;display:block;background:#f3f1ec}.e{color:#fff;font:16px system-ui,sans-serif;padding:40px 24px;text-align:center}</style></head>
+<body><iframe id="f" title="Key Register"></iframe>
 <script src="config.js"></script>
 <script>
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
-let lastErr='';let D={keys:[],log:[],me:'',admin:false},U=null,tc='',view='k',q='',hf='',busy=false;
-try{U=JSON.parse(localStorage.getItem('kr_u')||'null')}catch(e){}
-const $=id=>document.getElementById(id);
-const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const today=()=>new Date().toLocaleDateString('en-CA');
-const fd=s=>s?s.split('-').reverse().join('/'):'';
-const TCS=()=>[...new Set(D.keys.map(k=>k.tc))];
-const keysOf=c=>D.keys.filter(k=>k.tc==c).map(k=>k.key);
-const openOf=(c,k)=>D.log.filter(l=>l.tc==c&&l.key==k&&!l.inn).pop();
-const outCount=c=>D.log.filter(l=>l.tc==c&&!l.inn).length;
-function toast(m){const t=$('t');t.textContent=m;t.style.display='block';clearTimeout(toast.x);toast.x=setTimeout(()=>t.style.display='none',3500)}
-function ban(m){const b=$('ban');b.textContent=m;b.style.display=m?'block':'none'}
-function jsonp(url){return new Promise((res,rej)=>{const cb='krcb'+Date.now()+Math.floor(Math.random()*1e5),s=document.createElement('script');
- const t=setTimeout(()=>{clean();rej(new Error('timeout'))},30000);function clean(){clearTimeout(t);delete window[cb];s.remove()}
- window[cb]=d=>{clean();res(d)};s.onerror=()=>{clean();rej(new Error('script load failed'))};s.src=url+'&callback='+cb;document.head.appendChild(s)})}
-async function api(a,x){const p=JSON.stringify(Object.assign({a:a,name:U&&U.name,pin:U&&U.pin},x||{}));return jsonp(API_URL+'?p='+encodeURIComponent(p))}
-async function call(a,x){lastErr='';if(!API_URL||API_URL.indexOf('PASTE')==0){lastErr='config.js has no web app address yet.';ban(lastErr);return null}
- try{const r=await api(a,x);if(r.auth===false){signOut(r.error);return null}if(!r.state&&!r.error){lastErr='Unexpected reply from the server. In Apps Script, paste the latest Code.gs and deploy it as a New version.';ban(lastErr);return null}return r}catch(e){lastErr='Cannot reach the server ('+(e&&e.message||e)+'). Check the web app deployment (Execute as: Me, Access: Anyone).';toast('Cannot reach the server');return null}}
-function showLogin(msg){$('app').style.display='none';$('lg').style.display='block';$('lerr').textContent=msg||'';if(U)$('ln').value=U.name||''}
-function signOut(msg){U=null;try{localStorage.removeItem('kr_u')}catch(e){}$('lp').value='';showLogin(typeof msg=='string'?msg:'')}
-async function load(){if(!U||busy||$('sh').style.display=='flex'||document.hidden)return;const r=await call('state');if(r&&r.state){D=r.state;ban('');if(!tc)tc=TCS()[0];render()}else if(r&&r.error)ban(r.error)}
-function render(){
- $('lg').style.display='none';$('app').style.display='block';
- $('role').textContent=D.admin?'Admin':'Borrower';$('role').className='role'+(D.admin?' a':'');$('mn').textContent=D.me;
- $('chips').innerHTML=TCS().map(c=>`<button class="chip ${c==tc?'on':''}" data-tc="${esc(c)}">${esc(c)}${outCount(c)?`<b>${outCount(c)}</b>`:''}</button>`).join('');
- $('chips').style.display=view=='k'?'flex':'none';
- document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.v==view));
- const m=$('m');
- if(view=='k'){m.innerHTML=keysOf(tc).map((k,i)=>{const o=openOf(tc,k);return `<button class="k" data-i="${i}"><span><strong>${esc(k)}</strong><small>${o?'With '+esc(o.name)+' since '+fd(o.out):'In key cabinet'}</small></span><span class="st ${o?'o':''}">${o?'OUT':'IN'}</span></button>`}).join('')}
- else if(view=='o'){const o=D.log.filter(l=>!l.inn).sort((a,b)=>a.out>b.out?1:-1);
-  m.innerHTML=o.length?o.map(l=>`<button class="k" data-id="${esc(l.id)}"><span><strong>${esc(l.key)}</strong><small>${esc(l.tc)} · ${esc(l.name)} · since ${fd(l.out)}</small></span><span class="st o">Return</span></button>`).join(''):'<div class="empty">All keys are in the cabinet.</div>'}
- else{const L=D.log.filter(l=>(!hf||l.tc==hf)&&(!q||(l.key+l.name+l.tc).toLowerCase().includes(q.toLowerCase()))).sort((a,b)=>(b.out+b.at>a.out+a.at?1:-1));
-  m.innerHTML=`<div class="bar"><select id="hf"><option value="">All councils</option>${TCS().map(c=>`<option ${c==hf?'selected':''}>${esc(c)}</option>`).join('')}</select><input id="q" placeholder="Search" value="${esc(q)}"></div>`+(L.length?L.map(l=>`<div class="h"><b>${esc(l.key)}</b> <span style="color:var(--mut)">${esc(l.tc)}</span><div class="r"><span>${esc(l.name)}</span><span>${fd(l.out)} → ${l.inn?fd(l.inn):'<b style="color:var(--out)">not returned</b>'}</span></div><div class="r"><span>Issued by ${esc(l.by)}${l.rby?' · received by '+esc(l.rby):''}</span>${D.admin?`<button data-del="${esc(l.id)}">Delete</button>`:''}</div></div>`).join(''):'<div class="empty">No records yet.</div>')}}
-function sheet(h){$('shc').innerHTML=h;$('sh').style.display='flex'}
-const close=()=>{$('sh').style.display='none'};
-function openKey(c,k){const o=openOf(c,k);
- if(o)sheet(`<h3>${esc(k)}</h3><p>${esc(c)} · with <b>${esc(o.name)}</b> since ${fd(o.out)}</p><label>Return date</label><input id="d" type="date" value="${today()}"><button class="btn" id="go" data-act="ret" data-id="${esc(o.id)}">Mark returned</button><button class="btn g" id="cx">Cancel</button>`);
- else sheet(`<h3>${esc(k)}</h3><p>${esc(c)} · in key cabinet</p><label>Borrower name</label><input id="n" value="${esc(D.me)}" placeholder="Name"><label>Borrowing date</label><input id="d" type="date" value="${today()}"><button class="btn" id="go" data-act="bor" data-tc="${esc(c)}" data-k="${esc(k)}">Borrow key</button><button class="btn g" id="cx">Cancel</button>`)}
-async function act(a,x,msg,btn){busy=true;if(btn)btn.disabled=true;const r=await call(a,x);busy=false;if(btn)btn.disabled=false;if(!r)return;if(r.state){D=r.state;render()}if(r.error)toast(r.error);else{close();toast(msg)}}
-$('lgo').onclick=async()=>{const n=$('ln').value.trim(),p=$('lp').value.trim();if(!n||!p){$('lerr').textContent='Enter your name and PIN.';return}
- U={name:n,pin:p};$('lgo').disabled=true;$('lerr').textContent='';const r=await call('state');$('lgo').disabled=false;
- if(r&&r.state){D=r.state;U.name=D.me;try{localStorage.setItem('kr_u',JSON.stringify(U))}catch(e){}tc=TCS()[0];view='k';render()}else if(r&&r.error)$('lerr').textContent=r.error;else if(!r)$('lerr').textContent=lastErr||'Could not connect.'};
-$('lp').onkeydown=e=>{if(e.key=='Enter')$('lgo').click()};
-$('so').onclick=()=>signOut('');
-document.addEventListener('click',e=>{const t=e.target.closest('button');if(e.target.id=='sh')return close();if(!t)return;
- if(t.classList.contains('chip')){tc=t.dataset.tc;render()}
- else if(t.dataset.v){view=t.dataset.v;render()}
- else if(t.classList.contains('k')){if(t.dataset.i!=null)openKey(tc,keysOf(tc)[t.dataset.i]);else{const l=D.log.find(x=>x.id==t.dataset.id);if(l)openKey(l.tc,l.key)}}
- else if(t.id=='cx')close();
- else if(t.dataset.del){if(confirm('Delete this record?'))act('delete',{id:t.dataset.del},'Deleted')}
- else if(t.id=='go'){const d=$('d').value;if(!d)return toast('Pick a date');
-  if(t.dataset.act=='bor'){const n=$('n').value.trim();if(!n)return toast('Enter borrower name');act('borrow',{tc:t.dataset.tc,key:t.dataset.k,name:n,date:d},'Key borrowed',t)}
-  else act('return',{id:t.dataset.id,date:d},'Key returned',t)}});
-document.addEventListener('input',e=>{if(e.target.id=='q'){q=e.target.value;const p=e.target.selectionStart;render();const i=$('q');i.focus();i.setSelectionRange(p,p)}});
-document.addEventListener('change',e=>{if(e.target.id=='hf'){hf=e.target.value;render()}});
-document.addEventListener('visibilitychange',load);
-(async()=>{if(U){const r=await call('state');if(r&&r.state){D=r.state;tc=TCS()[0];render()}else if(!r||!r.error)showLogin('')}else showLogin('');setInterval(load,20000)})();
+if(!API_URL||API_URL.indexOf('PASTE')==0)document.body.innerHTML='<div class="e">config.js needs the web app address.</div>';
+else document.getElementById('f').src=API_URL;
 </script></body></html>
