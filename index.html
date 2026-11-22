@@ -61,7 +61,7 @@ const openOf=(c,k)=>D.log.filter(l=>l.tc==c&&l.key==k&&!l.inn).pop();
 const outCount=c=>D.log.filter(l=>l.tc==c&&!l.inn).length;
 function toast(m){const t=$('t');t.textContent=m;t.style.display='block';clearTimeout(toast.x);toast.x=setTimeout(()=>t.style.display='none',3500)}
 function ban(m){const b=$('ban');b.textContent=m;b.style.display=m?'block':'none'}
-async function api(a,x){const r=await fetch(API_URL,{method:'POST',body:JSON.stringify(Object.assign({a:a,name:U&&U.name,pin:U&&U.pin},x||{}))});return r.json()}
+async function api(a,x){const p=JSON.stringify(Object.assign({a:a,name:U&&U.name,pin:U&&U.pin},x||{}));const r=await fetch(API_URL+'?p='+encodeURIComponent(p));return r.json()}
 async function call(a,x){lastErr='';if(!API_URL||API_URL.indexOf('PASTE')==0){lastErr='config.js has no web app address yet.';ban(lastErr);return null}
  try{const r=await api(a,x);if(r.auth===false){signOut(r.error);return null}return r}catch(e){lastErr='Cannot reach the server ('+(e&&e.message||e)+'). Check the web app deployment (Execute as: Me, Access: Anyone).';toast('Cannot reach the server');return null}}
 function showLogin(msg){$('app').style.display='none';$('lg').style.display='block';$('lerr').textContent=msg||'';if(U)$('ln').value=U.name||''}
@@ -104,3 +104,4 @@ document.addEventListener('change',e=>{if(e.target.id=='hf'){hf=e.target.value;r
 document.addEventListener('visibilitychange',load);
 (async()=>{if(U){const r=await call('state');if(r&&r.state){D=r.state;tc=TCS()[0];render()}else if(!r||!r.error)showLogin('')}else showLogin('');setInterval(load,20000)})();
 </script></body></html>
+
