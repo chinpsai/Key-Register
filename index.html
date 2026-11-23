@@ -2,16 +2,12 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#1f3a5f">
-<meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Keys"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" href="icon-192.png">
 <title>Key Register</title>
-<style>html,body{margin:0;height:100%;background:#1f3a5f}body{padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px);box-sizing:border-box}
-iframe{border:0;width:100%;height:100%;display:block;background:#f3f1ec}.e{color:#fff;font:16px system-ui,sans-serif;padding:40px 24px;text-align:center}</style></head>
-<body><iframe id="f" title="Key Register"></iframe>
+<style>html,body{margin:0;height:100%;background:#1f3a5f;color:#fff;font:16px system-ui,sans-serif}body{display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;text-align:center;padding:24px}img{width:96px;height:96px;border-radius:22px}a{color:#e0b250}</style></head>
+<body><img src="icon-192.png" alt=""><div>Opening Key Register…</div><a id="l" href="#">Tap here if it does not open</a>
 <script src="config.js"></script>
 <script>
-if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
-if(!API_URL||API_URL.indexOf('PASTE')==0)document.body.innerHTML='<div class="e">config.js needs the web app address.</div>';
-else document.getElementById('f').src=API_URL;
+if(!API_URL||API_URL.indexOf('PASTE')==0)document.querySelector('div').textContent='config.js needs the web app address.';
+else{document.getElementById('l').href=API_URL;location.replace(API_URL)}
 </script></body></html>
